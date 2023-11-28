@@ -11,22 +11,32 @@ class ImagesState extends Equatable {
   /// to store current selections to converting mp4
   final List<String> selectedImageFileList;
 
+  final int progress;
+
+  final String videoPath;
+
   const ImagesState({
     this.imageStatus = ImageStatus.initial,
     this.imageFileList = const <XFile>[],
     this.selectedImageFileList = const <String>[],
+    this.progress = 0,
+    this.videoPath = "",
   });
 
   ImagesState copyWith({
     ImageStatus? imageStatus,
     List<XFile>? imageFileList,
     List<String>? selectedImageFileList,
+    int? progress,
+    String? videoPath,
   }) {
     return ImagesState(
       imageStatus: imageStatus ?? this.imageStatus,
       imageFileList: imageFileList ?? this.imageFileList,
       selectedImageFileList:
           selectedImageFileList ?? this.selectedImageFileList,
+      progress: progress ?? this.progress,
+      videoPath: videoPath ?? this.videoPath,
     );
   }
 
@@ -35,5 +45,7 @@ class ImagesState extends Equatable {
         imageStatus,
         imageFileList,
         selectedImageFileList,
+        progress,
+        videoPath,
       ];
 }

@@ -23,6 +23,10 @@ dependencies:
   auto_route: ^5.0.1
   flutter_screenutil: ^5.8.4
   gap: ^3.0.1
+  video_player: ^2.8.1
+  path_provider: ^2.1.1
+  permission_handler: ^10.2.0
+  image_picker: ^1.0.4
 
 
  

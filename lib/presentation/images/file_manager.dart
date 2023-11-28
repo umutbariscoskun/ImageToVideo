@@ -16,7 +16,10 @@ abstract interface class FileManager {
     required String newPath,
   });
 
-  List<String> getVideoCommand({required Directory destination});
+  List<String> getVideoCommand({
+    required Directory destination,
+    required String outputPath,
+  });
   Future<void> init();
 }
 
@@ -36,22 +39,20 @@ class FileManagerImpl implements FileManager {
   }
 
   @override
-  List<String> getVideoCommand({required Directory destination}) {
-    final videoPath =
-        '${destination.path}/output_${DateTime.now().millisecondsSinceEpoch}.mp4';
+  List<String> getVideoCommand(
+      {required Directory destination, required String outputPath}) {
     return [
       // Transitioning between images
       "-r",
       (1 / (slideDuration.inMilliseconds / 1000))
           .toPrecision(digits: 2)
           .toString(),
-      "15",
       "-i",
       "${destination.path}/image%03d.jpg",
 
-      // Override file in case it exists (we got error in past for the project)
+      // Override file in case it exists
       '-y',
-      videoPath,
+      outputPath,
     ];
   }
 

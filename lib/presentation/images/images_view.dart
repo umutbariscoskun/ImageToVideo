@@ -76,7 +76,7 @@ class ImagesView extends StatelessWidget {
                       ),
                       Gap(10.w),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async => await cubit.createVideo(),
                         child: Container(
                           width: 150,
                           height: 50,

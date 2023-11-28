@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_to_video/presentation/images/file_manager.dart';
 
 import 'package:injectable/injectable.dart';
 
@@ -8,7 +9,11 @@ part 'images_state.dart';
 
 @injectable
 class ImagesCubit extends Cubit<ImagesState> {
-  ImagesCubit() : super(const ImagesState()) {
+  final FileManager _fileManager;
+  ImagesCubit({
+    required FileManager fileManager,
+  })  : _fileManager = fileManager,
+        super(const ImagesState()) {
     init();
   }
   late final ImagePicker _imagePicker;

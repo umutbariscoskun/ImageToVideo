@@ -11,4 +11,14 @@ class ServerFailure extends Failure {
   final Object? message;
 }
 
+class FfmpegFailure extends Failure {
+  FfmpegFailure({this.message});
+  final Object? message;
+}
+
+class ImagePickerFailure extends Failure {
+  ImagePickerFailure({this.message});
+  final Object? message;
+}
+
 class CacheFailure extends Failure {}

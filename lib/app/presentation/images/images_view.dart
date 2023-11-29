@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:image_to_video/app/presentation/images/cubit/images_cubit.dart';
 import 'package:image_to_video/core/di/injectable.dart';
-import 'package:image_to_video/presentation/images/cubit/images_cubit.dart';
 
 class ImagesView extends StatelessWidget {
   const ImagesView({super.key});

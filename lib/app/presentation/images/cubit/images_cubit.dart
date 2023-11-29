@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_to_video/app/data/service/file_manager.dart';
 import 'package:image_to_video/core/constants/text_constants.dart';
 import 'package:image_to_video/core/shared/helper_functions.dart';
 import 'package:image_to_video/core/shared/logger.dart';
-import 'package:image_to_video/presentation/images/file_manager.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
 import 'package:injectable/injectable.dart';

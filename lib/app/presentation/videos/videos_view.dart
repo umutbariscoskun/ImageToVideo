@@ -7,6 +7,7 @@ import 'package:image_to_video/app/presentation/videos/cubit/videos_cubit.dart';
 import 'package:image_to_video/app/presentation/widget/default_appbar.dart';
 import 'package:image_to_video/app/presentation/widget/gradient_square_button.dart';
 import 'package:image_to_video/core/constants/app_constants.dart';
+import 'package:image_to_video/core/constants/color_constants.dart';
 import 'package:image_to_video/core/constants/text_constants.dart';
 import 'package:image_to_video/core/di/injectable.dart';
 import 'package:image_to_video/core/extension/context_extension.dart';
@@ -63,26 +64,64 @@ class VideosView extends StatelessWidget {
                         crossAxisSpacing: 5,
                       ),
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onLongPress: () async =>
-                              await cubit.deleteProject(index),
-                          child: GradientSquareButton(
-                            onPressed: () => appRouter.push(VideoPlayerRoute(
-                                videoPath: state.projects[index].projectPath)),
-                            size: Size(160.w, 160.h),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.file(
-                                  File(
-                                    state.projects[index].projectImages.first,
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            GestureDetector(
+                              onLongPress: () {
+                                cubit.updateSelectedList(
+                                    id: state.projects[index].projectId);
+                              },
+                              child: GradientSquareButton(
+                                onPressed: () => appRouter.push(
+                                    VideoPlayerRoute(
+                                        videoPath:
+                                            state.projects[index].projectPath)),
+                                size: Size(160.w, 160.h),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.file(
+                                      File(
+                                        state.projects[index].projectImages
+                                            .first,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                          ),
+                            if (cubit.checkForSelectedIcon(
+                                path: state.projects[index].projectId))
+                              GestureDetector(
+                                onLongPress: () {
+                                  cubit.updateSelectedList(
+                                      id: state.projects[index].projectId);
+                                },
+                                onTap: () => cubit.deleteProject(index),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: 160.w,
+                                      height: 160.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: ColorConstants.blue
+                                            .withOpacity(0.4),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.delete,
+                                      color: ColorConstants.whiteColor,
+                                      size: 32.sp,
+                                    )
+                                  ],
+                                ),
+                              )
+                          ],
                         );
                       },
                     ),

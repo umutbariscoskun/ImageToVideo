@@ -44,4 +44,23 @@ class VideosCubit extends Cubit<VideosState> {
     emit(state.copyWith(projects: list));
     emit(state.copyWith(videosStatus: VideosStatus.success));
   }
+
+  void updateSelectedList({required String id}) {
+    final selectedFiles = <String>[];
+    selectedFiles.addAll(state.deleteList);
+
+    if (selectedFiles.contains(id)) {
+      selectedFiles.removeWhere((element) => element == id);
+
+      emit(state.copyWith(deleteList: selectedFiles));
+    } else {
+      selectedFiles.add(id);
+
+      emit(state.copyWith(deleteList: selectedFiles));
+    }
+  }
+
+  bool checkForSelectedIcon({required String path}) {
+    return state.deleteList.contains(path);
+  }
 }

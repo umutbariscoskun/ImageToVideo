@@ -45,7 +45,7 @@ class VideoPlayerView extends StatelessWidget {
                               size: 36.sp,
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                     ),

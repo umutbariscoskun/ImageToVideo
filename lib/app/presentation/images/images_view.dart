@@ -48,6 +48,7 @@ class ImagesView extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const DefaultAppBar(isBackActive: true),
                       Padding(

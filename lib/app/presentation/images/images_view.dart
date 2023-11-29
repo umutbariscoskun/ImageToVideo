@@ -26,7 +26,7 @@ class ImagesView extends StatelessWidget {
                       child: Padding(
                     padding: EdgeInsets.all(20),
                     child: GridView.builder(
-                      itemCount: state.imageFileList.length,
+                      itemCount: state.pickedImageFileList.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 1,
@@ -37,7 +37,7 @@ class ImagesView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () => cubit.updateSelectedList(
-                              path: state.imageFileList[index].path),
+                              path: state.pickedImageFileList[index]),
                           child: Stack(
                             alignment: Alignment.topRight,
                             children: [
@@ -46,13 +46,13 @@ class ImagesView extends StatelessWidget {
                                 height: 150.h,
                                 child: Image.file(
                                   File(
-                                    state.imageFileList[index].path,
+                                    state.pickedImageFileList[index],
                                   ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                               if (cubit.checkForSelectedIcon(
-                                  path: state.imageFileList[index].path))
+                                  path: state.pickedImageFileList[index]))
                                 const Icon(
                                   Icons.check,
                                   color: Colors.white,

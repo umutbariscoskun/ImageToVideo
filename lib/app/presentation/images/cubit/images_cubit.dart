@@ -10,6 +10,7 @@ import 'package:image_to_video/core/shared/helper_functions.dart';
 import 'package:image_to_video/core/shared/logger.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
+import 'package:image_to_video/core/usecase/usecase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 
@@ -29,20 +30,39 @@ class ImagesCubit extends Cubit<ImagesState> {
   }
   late final ImagePicker _imagePicker;
   final List<String> _newPaths = [];
+  final Set<String> _uniqueImagePaths = {};
 
   Future<void> init() async {
     await _projectUseCases.init();
     await _fileManager.init();
     _imagePicker = ImagePicker();
+    final projectList = await foldAsync(
+        () async => _projectUseCases.getProjectsUseCase.call(NoParams()));
+
+    if (projectList != null) {
+      for (var project in projectList) {
+        for (var image in project.projectImages) {
+          _uniqueImagePaths.add(image);
+        }
+      }
+    }
+    final allFiles = <String>[];
+    allFiles.addAll(state.pickedImageFileList);
+    allFiles.addAll(_uniqueImagePaths);
+    print(allFiles);
+    emit(state.copyWith(pickedImageFileList: allFiles));
   }
 
   Future<void> pickMultipleImages() async {
     List<XFile>? selectedImages = await _imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {}
-    final allFiles = <XFile>[];
-    allFiles.addAll(state.imageFileList);
-    allFiles.addAll(selectedImages);
-    emit(state.copyWith(imageFileList: allFiles));
+    final allFiles = <String>[];
+    allFiles.addAll(state.pickedImageFileList);
+    for (var element in selectedImages) {
+      allFiles.add(element.path);
+    }
+
+    emit(state.copyWith(pickedImageFileList: allFiles));
   }
 
   void updateSelectedList({required String path}) {

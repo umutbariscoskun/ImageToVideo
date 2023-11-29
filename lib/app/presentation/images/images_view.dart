@@ -155,6 +155,7 @@ class ImagesView extends StatelessWidget {
                           ),
                         ],
                       ),
+                      Gap(context.bottomPadding.h)
                     ],
                   ),
                   if (state.isConvertProcessStarted && !state.isFinished)

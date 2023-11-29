@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:image_to_video/app/presentation/videos/cubit/videos_cubit.dart';
 import 'package:image_to_video/app/presentation/widget/default_appbar.dart';
 import 'package:image_to_video/app/presentation/widget/gradient_square_button.dart';
@@ -126,6 +127,7 @@ class VideosView extends StatelessWidget {
                       },
                     ),
                   )),
+                  Gap(context.bottomPadding.h)
                 ],
               );
             },

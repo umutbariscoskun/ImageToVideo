@@ -19,6 +19,7 @@ class ProjectLocalCacheRepositoryImpl implements ProjectLocalRepository {
       final model = ProjectLocalCacheModel(
         projectId: entity.projectId,
         projectPath: entity.projectPath,
+        projectImages: entity.projectImages,
       );
 
       return Right(await _projectLocalDataSource.addItem(model));
@@ -56,6 +57,7 @@ class ProjectLocalCacheRepositoryImpl implements ProjectLocalRepository {
             (e) => ProjectEntity(
               projectId: e.projectId,
               projectPath: e.projectPath,
+              projectImages: e.projectImages,
             ),
           ),
         );

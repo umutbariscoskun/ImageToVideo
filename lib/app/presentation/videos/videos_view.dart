@@ -37,6 +37,8 @@ class VideosView extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         return GestureDetector(
+                          onLongPress: () async =>
+                              await cubit.deleteProject(index),
                           onTap: () => appRouter.push(VideoPlayerRoute(
                               videoPath: state.projects[index].projectPath)),
                           child: Stack(

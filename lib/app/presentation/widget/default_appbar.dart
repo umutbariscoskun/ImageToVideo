@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:image_to_video/core/constants/app_constants.dart';
-import 'package:image_to_video/core/constants/color_constants.dart';
 import 'package:image_to_video/core/constants/text_constants.dart';
 import 'package:image_to_video/core/extension/context_extension.dart';
+import 'package:image_to_video/core/shared/helper_functions.dart';
 
 class DefaultAppBar extends StatelessWidget {
   final Widget? appBarLeadingWidget;
   final Widget? appBarCenterWidget;
   final bool? isBackActive;
+  final Function? backOnPress;
   const DefaultAppBar(
       {this.appBarCenterWidget,
       this.isBackActive,
       this.appBarLeadingWidget,
+      this.backOnPress,
       super.key});
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class DefaultAppBar extends StatelessWidget {
           if (isBackActive ?? false)
             GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: () => Navigator.pop(context),
+              onTap: () =>
+                  backOnPress != null ? backOnPress!() : appRouter.pop(),
               child: Row(
                 children: [
                   const Icon(

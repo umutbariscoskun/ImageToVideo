@@ -38,10 +38,19 @@ class HomeView extends StatelessWidget {
                           linearGradient: ColorConstants.whiteGradient,
                           textStyle: kBoldLargeTitleStyle(kPurple),
                         ),
-                        GradientTextWidget(
-                          headerTitle: TextConstants.converter,
-                          linearGradient: ColorConstants.whiteGradient,
-                          textStyle: kBoldLargeTitleStyle(kPurple),
+                        Row(
+                          children: [
+                            GradientTextWidget(
+                              headerTitle: TextConstants.converter,
+                              linearGradient: ColorConstants.whiteGradient,
+                              textStyle: kBoldLargeTitleStyle(kPurple),
+                            ),
+                            Icon(
+                              Icons.play_arrow,
+                              size: 42.sp,
+                              color: kPurple2,
+                            )
+                          ],
                         ),
                         Text(
                           "Turn your photos into a video in seconds!",
@@ -68,7 +77,7 @@ class HomeView extends StatelessWidget {
                       ),
                       GradientSquareButton(
                         size: Size(150.w, 150.h),
-                        onPressed: () => appRouter.push(const VideosRoute()),
+                        onPressed: () => appRouter.push(VideosRoute()),
                         child: Icon(
                           Icons.play_arrow,
                           color: Colors.white,

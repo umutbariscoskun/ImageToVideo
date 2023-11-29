@@ -8,5 +8,6 @@ class TextConstants {
 
   static String get back => "Back";
   static String get video => "Video";
+  static String get photos => "Photos";
   static String get converter => "Converter";
 }

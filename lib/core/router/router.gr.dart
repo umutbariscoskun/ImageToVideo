@@ -36,9 +36,14 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     VideosRoute.name: (routeData) {
+      final args = routeData.argsAs<VideosRouteArgs>(
+          orElse: () => const VideosRouteArgs());
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const VideosView(),
+        child: VideosView(
+          pushedFromImages: args.pushedFromImages,
+          key: args.key,
+        ),
       );
     },
     VideoPlayerRoute.name: (routeData) {
@@ -116,14 +121,36 @@ class ImagesRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [VideosView]
-class VideosRoute extends PageRouteInfo<void> {
-  const VideosRoute()
-      : super(
+class VideosRoute extends PageRouteInfo<VideosRouteArgs> {
+  VideosRoute({
+    bool pushedFromImages = false,
+    Key? key,
+  }) : super(
           VideosRoute.name,
           path: '/videos-view',
+          args: VideosRouteArgs(
+            pushedFromImages: pushedFromImages,
+            key: key,
+          ),
         );
 
   static const String name = 'VideosRoute';
+}
+
+class VideosRouteArgs {
+  const VideosRouteArgs({
+    this.pushedFromImages = false,
+    this.key,
+  });
+
+  final bool pushedFromImages;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'VideosRouteArgs{pushedFromImages: $pushedFromImages, key: $key}';
+  }
 }
 
 /// generated route for

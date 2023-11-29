@@ -7,12 +7,15 @@ import 'package:image_to_video/app/presentation/videos/cubit/videos_cubit.dart';
 import 'package:image_to_video/app/presentation/widget/default_appbar.dart';
 import 'package:image_to_video/app/presentation/widget/gradient_square_button.dart';
 import 'package:image_to_video/core/constants/app_constants.dart';
+import 'package:image_to_video/core/constants/text_constants.dart';
 import 'package:image_to_video/core/di/injectable.dart';
+import 'package:image_to_video/core/extension/context_extension.dart';
 import 'package:image_to_video/core/router/router.dart';
 import 'package:image_to_video/core/shared/helper_functions.dart';
 
 class VideosView extends StatelessWidget {
-  const VideosView({super.key});
+  const VideosView({this.pushedFromImages = false, super.key});
+  final bool pushedFromImages;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,27 @@ class VideosView extends StatelessWidget {
               final cubit = context.read<VideosCubit>();
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const DefaultAppBar(isBackActive: true),
+                  DefaultAppBar(
+                    isBackActive: true,
+                    backOnPress: () => pushedFromImages
+                        ? appRouter.pushAndPopUntil(
+                            const HomeRoute(),
+                            predicate: (route) {
+                              return route.settings.name == HomeRoute.name;
+                            },
+                          )
+                        : appRouter.pop(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: context.horizontalDefaultPadding),
+                    child: Text(
+                      TextConstants.video,
+                      style: kLargeTitleStyle(kPurple),
+                    ),
+                  ),
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(20),

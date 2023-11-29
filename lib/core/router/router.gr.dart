@@ -35,6 +35,12 @@ class _$AppRouter extends RootStackRouter {
         child: const ImagesView(),
       );
     },
+    VideosRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const VideosView(),
+      );
+    },
   };
 
   @override
@@ -50,6 +56,10 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           ImagesRoute.name,
           path: '/images-view',
+        ),
+        RouteConfig(
+          VideosRoute.name,
+          path: '/videos-view',
         ),
       ];
 }
@@ -88,4 +98,16 @@ class ImagesRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ImagesRoute';
+}
+
+/// generated route for
+/// [VideosView]
+class VideosRoute extends PageRouteInfo<void> {
+  const VideosRoute()
+      : super(
+          VideosRoute.name,
+          path: '/videos-view',
+        );
+
+  static const String name = 'VideosRoute';
 }

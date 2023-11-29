@@ -20,17 +20,20 @@ class ProjectLocalCacheModelAdapter
     return ProjectLocalCacheModel(
       projectId: fields[0] as String,
       projectPath: fields[1] as String,
+      projectImages: (fields[2] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectLocalCacheModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.projectId)
       ..writeByte(1)
-      ..write(obj.projectPath);
+      ..write(obj.projectPath)
+      ..writeByte(2)
+      ..write(obj.projectImages);
   }
 
   @override

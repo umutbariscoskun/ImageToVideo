@@ -2,11 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_to_video/app/data/service/file_manager.dart';
+import 'package:image_to_video/app/domain/entity/project.dart';
+import 'package:image_to_video/app/domain/usecase/project_entity_use_cases/project_use_cases.dart';
 import 'package:image_to_video/core/constants/text_constants.dart';
+import 'package:image_to_video/core/extension/cubit_extension.dart';
 import 'package:image_to_video/core/shared/helper_functions.dart';
 import 'package:image_to_video/core/shared/logger.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
+import 'package:image_to_video/core/usecase/usecase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 
@@ -15,27 +19,50 @@ part 'images_state.dart';
 @injectable
 class ImagesCubit extends Cubit<ImagesState> {
   final FileManager _fileManager;
+  final ProjectUseCases _projectUseCases;
   ImagesCubit({
     required FileManager fileManager,
+    required ProjectUseCases projectUseCases,
   })  : _fileManager = fileManager,
+        _projectUseCases = projectUseCases,
         super(const ImagesState()) {
     init();
   }
   late final ImagePicker _imagePicker;
   final List<String> _newPaths = [];
+  final Set<String> _uniqueImagePaths = {};
 
   Future<void> init() async {
+    await _projectUseCases.init();
     await _fileManager.init();
     _imagePicker = ImagePicker();
+    final projectList = await foldAsync(
+        () async => _projectUseCases.getProjectsUseCase.call(NoParams()));
+
+    if (projectList != null) {
+      for (var project in projectList) {
+        for (var image in project.projectImages) {
+          _uniqueImagePaths.add(image);
+        }
+      }
+    }
+    final allFiles = <String>[];
+    allFiles.addAll(state.pickedImageFileList);
+    allFiles.addAll(_uniqueImagePaths);
+    print(allFiles);
+    emit(state.copyWith(pickedImageFileList: allFiles));
   }
 
   Future<void> pickMultipleImages() async {
     List<XFile>? selectedImages = await _imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {}
-    final allFiles = <XFile>[];
-    allFiles.addAll(state.imageFileList);
-    allFiles.addAll(selectedImages);
-    emit(state.copyWith(imageFileList: allFiles));
+    final allFiles = <String>[];
+    allFiles.addAll(state.pickedImageFileList);
+    for (var element in selectedImages) {
+      allFiles.add(element.path);
+    }
+
+    emit(state.copyWith(pickedImageFileList: allFiles));
   }
 
   void updateSelectedList({required String path}) {
@@ -58,6 +85,7 @@ class ImagesCubit extends Cubit<ImagesState> {
   }
 
   Future<void> createVideo() async {
+    final selectedList = <String>[];
     final paths = state.selectedImageFileList;
     final dir = _fileManager.buildNewPath(projectId);
     await dir.create();
@@ -68,11 +96,12 @@ class ImagesCubit extends Cubit<ImagesState> {
           newPath: buildPath(dir, "image00${i.toString()}.jpg"));
 
       if (newPath == null) continue;
+      selectedList.add(newPath);
       // We care here only about relative path
       _newPaths.add(basename(newPath));
     }
-    final videoPath =
-        '${dir.path}/output_${DateTime.now().millisecondsSinceEpoch}.mp4';
+
+    final videoPath = '${dir.path}/output_${projectId}.mp4';
     final videoCommand = _fileManager.getVideoCommand(
       destination: dir,
       outputPath: videoPath,
@@ -101,6 +130,18 @@ class ImagesCubit extends Cubit<ImagesState> {
       FFmpegKitConfig.enableStatisticsCallback();
     }
     emit(state.copyWith(videoPath: videoPath));
+    await foldAsync(
+      () async => await _projectUseCases.addProjectUseCase.call(
+        AddProjectParams(
+          ProjectEntity(
+            projectId: projectId.toString(),
+            projectPath: videoPath,
+            projectImages: selectedList,
+          ),
+        ),
+      ),
+    );
+
     logSuccess("${TextConstants.videoPath} $videoPath");
   }
 }

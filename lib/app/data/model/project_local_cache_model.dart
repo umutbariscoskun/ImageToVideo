@@ -9,13 +9,20 @@ class ProjectLocalCacheModel extends Equatable {
   const ProjectLocalCacheModel({
     required this.projectId,
     required this.projectPath,
+    required this.projectImages,
   });
 
   @HiveField(0)
   final String projectId;
   @HiveField(1)
   final String projectPath;
+  @HiveField(2)
+  final List<String> projectImages;
 
   @override
-  List<Object?> get props => [projectId, projectPath];
+  List<Object?> get props => [
+        projectId,
+        projectPath,
+        projectImages,
+      ];
 }

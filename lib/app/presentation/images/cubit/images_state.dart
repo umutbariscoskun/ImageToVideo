@@ -6,7 +6,7 @@ class ImagesState extends Equatable {
   final ImageStatus imageStatus;
 
   /// to store images uploaded from gallery
-  final List<XFile> imageFileList;
+  final List<String> pickedImageFileList;
 
   /// to store current selections to converting mp4
   final List<String> selectedImageFileList;
@@ -17,7 +17,7 @@ class ImagesState extends Equatable {
 
   const ImagesState({
     this.imageStatus = ImageStatus.initial,
-    this.imageFileList = const <XFile>[],
+    this.pickedImageFileList = const <String>[],
     this.selectedImageFileList = const <String>[],
     this.progress = 0,
     this.videoPath = "",
@@ -25,14 +25,14 @@ class ImagesState extends Equatable {
 
   ImagesState copyWith({
     ImageStatus? imageStatus,
-    List<XFile>? imageFileList,
+    List<String>? pickedImageFileList,
     List<String>? selectedImageFileList,
     int? progress,
     String? videoPath,
   }) {
     return ImagesState(
       imageStatus: imageStatus ?? this.imageStatus,
-      imageFileList: imageFileList ?? this.imageFileList,
+      pickedImageFileList: pickedImageFileList ?? this.pickedImageFileList,
       selectedImageFileList:
           selectedImageFileList ?? this.selectedImageFileList,
       progress: progress ?? this.progress,
@@ -43,7 +43,7 @@ class ImagesState extends Equatable {
   @override
   List<Object> get props => [
         imageStatus,
-        imageFileList,
+        pickedImageFileList,
         selectedImageFileList,
         progress,
         videoPath,

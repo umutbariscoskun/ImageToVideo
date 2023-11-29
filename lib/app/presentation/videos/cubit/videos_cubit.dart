@@ -32,4 +32,16 @@ class VideosCubit extends Cubit<VideosState> {
       emit(state.copyWith(projects: result));
     }
   }
+
+  Future<void> deleteProject(int index) async {
+    emit(state.copyWith(videosStatus: VideosStatus.loading));
+    final list = state.projects;
+
+    list.removeAt(index);
+
+    await foldAsync(() =>
+        _projectUseCases.deleteProjectUseCase.call(DeleteProjectParams(index)));
+    emit(state.copyWith(projects: list));
+    emit(state.copyWith(videosStatus: VideosStatus.success));
+  }
 }

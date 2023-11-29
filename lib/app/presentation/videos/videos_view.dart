@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_to_video/app/presentation/videos/cubit/videos_cubit.dart';
+import 'package:image_to_video/app/presentation/widget/default_appbar.dart';
+import 'package:image_to_video/app/presentation/widget/gradient_square_button.dart';
+import 'package:image_to_video/core/constants/app_constants.dart';
 import 'package:image_to_video/core/di/injectable.dart';
 import 'package:image_to_video/core/router/router.dart';
 import 'package:image_to_video/core/shared/helper_functions.dart';
@@ -14,6 +17,7 @@ class VideosView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBackGroundColor,
       body: SafeArea(
         child: BlocProvider(
           create: (context) => getIt<VideosCubit>(),
@@ -23,9 +27,10 @@ class VideosView extends StatelessWidget {
 
               return Column(
                 children: [
+                  const DefaultAppBar(isBackActive: true),
                   Expanded(
                       child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: GridView.builder(
                       itemCount: state.projects.length,
                       gridDelegate:
@@ -39,14 +44,14 @@ class VideosView extends StatelessWidget {
                         return GestureDetector(
                           onLongPress: () async =>
                               await cubit.deleteProject(index),
-                          onTap: () => appRouter.push(VideoPlayerRoute(
-                              videoPath: state.projects[index].projectPath)),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              SizedBox(
-                                width: 150.w,
-                                height: 150.h,
+                          child: GradientSquareButton(
+                            onPressed: () => appRouter.push(VideoPlayerRoute(
+                                videoPath: state.projects[index].projectPath)),
+                            size: Size(160.w, 160.h),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
                                 child: Image.file(
                                   File(
                                     state.projects[index].projectImages.first,
@@ -54,7 +59,7 @@ class VideosView extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         );
                       },

@@ -41,6 +41,16 @@ class _$AppRouter extends RootStackRouter {
         child: const VideosView(),
       );
     },
+    VideoPlayerRoute.name: (routeData) {
+      final args = routeData.argsAs<VideoPlayerRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: VideoPlayerView(
+          key: args.key,
+          videoPath: args.videoPath,
+        ),
+      );
+    },
   };
 
   @override
@@ -60,6 +70,10 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           VideosRoute.name,
           path: '/videos-view',
+        ),
+        RouteConfig(
+          VideoPlayerRoute.name,
+          path: '/video-player-view',
         ),
       ];
 }
@@ -110,4 +124,38 @@ class VideosRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'VideosRoute';
+}
+
+/// generated route for
+/// [VideoPlayerView]
+class VideoPlayerRoute extends PageRouteInfo<VideoPlayerRouteArgs> {
+  VideoPlayerRoute({
+    Key? key,
+    required String videoPath,
+  }) : super(
+          VideoPlayerRoute.name,
+          path: '/video-player-view',
+          args: VideoPlayerRouteArgs(
+            key: key,
+            videoPath: videoPath,
+          ),
+        );
+
+  static const String name = 'VideoPlayerRoute';
+}
+
+class VideoPlayerRouteArgs {
+  const VideoPlayerRouteArgs({
+    this.key,
+    required this.videoPath,
+  });
+
+  final Key? key;
+
+  final String videoPath;
+
+  @override
+  String toString() {
+    return 'VideoPlayerRouteArgs{key: $key, videoPath: $videoPath}';
+  }
 }

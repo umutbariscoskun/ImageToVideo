@@ -15,12 +15,18 @@ class ImagesState extends Equatable {
 
   final String videoPath;
 
+  final bool isFinished;
+
+  final bool isConvertProcessStarted;
+
   const ImagesState({
     this.imageStatus = ImageStatus.initial,
     this.pickedImageFileList = const <String>[],
     this.selectedImageFileList = const <String>[],
     this.progress = 0,
     this.videoPath = "",
+    this.isFinished = false,
+    this.isConvertProcessStarted = false,
   });
 
   ImagesState copyWith({
@@ -29,6 +35,8 @@ class ImagesState extends Equatable {
     List<String>? selectedImageFileList,
     int? progress,
     String? videoPath,
+    bool? isFinished,
+    bool? isConvertProcessStarted,
   }) {
     return ImagesState(
       imageStatus: imageStatus ?? this.imageStatus,
@@ -37,6 +45,9 @@ class ImagesState extends Equatable {
           selectedImageFileList ?? this.selectedImageFileList,
       progress: progress ?? this.progress,
       videoPath: videoPath ?? this.videoPath,
+      isFinished: isFinished ?? this.isFinished,
+      isConvertProcessStarted:
+          isConvertProcessStarted ?? this.isConvertProcessStarted,
     );
   }
 
@@ -47,5 +58,7 @@ class ImagesState extends Equatable {
         selectedImageFileList,
         progress,
         videoPath,
+        isFinished,
+        isConvertProcessStarted,
       ];
 }

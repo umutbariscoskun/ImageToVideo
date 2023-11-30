@@ -10,7 +10,6 @@ import 'package:image_to_video/core/shared/helper_functions.dart';
 import 'package:image_to_video/core/shared/logger.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
-import 'package:image_to_video/core/usecase/usecase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 
@@ -30,27 +29,11 @@ class ImagesCubit extends Cubit<ImagesState> {
   }
   late final ImagePicker _imagePicker;
   final List<String> _newPaths = [];
-  final Set<String> _uniqueImagePaths = {};
 
   Future<void> init() async {
     await _projectUseCases.init();
     await _fileManager.init();
     _imagePicker = ImagePicker();
-    final projectList = await foldAsync(
-        () async => _projectUseCases.getProjectsUseCase.call(NoParams()));
-
-    if (projectList != null) {
-      for (var project in projectList) {
-        for (var image in project.projectImages) {
-          _uniqueImagePaths.add(image);
-        }
-      }
-    }
-    final allFiles = <String>[];
-    allFiles.addAll(state.pickedImageFileList);
-    allFiles.addAll(_uniqueImagePaths);
-    print(allFiles);
-    emit(state.copyWith(pickedImageFileList: allFiles));
   }
 
   Future<void> pickMultipleImages() async {
@@ -85,6 +68,7 @@ class ImagesCubit extends Cubit<ImagesState> {
   }
 
   Future<void> createVideo() async {
+    emit(state.copyWith(isConvertProcessStarted: true));
     final selectedList = <String>[];
     final paths = state.selectedImageFileList;
     final dir = _fileManager.buildNewPath(projectId);
@@ -107,13 +91,14 @@ class ImagesCubit extends Cubit<ImagesState> {
       outputPath: videoPath,
     );
     final totalDuration =
-        paths.length * _fileManager.slideDuration.inMilliseconds;
+        _newPaths.length * _fileManager.slideDuration.inMilliseconds;
     final videoSession = await FFmpegSession.create(
       videoCommand,
       null,
       null,
       (statistic) {
-        var progress = statistic.getTime() / totalDuration;
+        double progress = 0;
+        progress = statistic.getTime() / totalDuration;
         if (progress < 0) progress = 0;
         if (progress > 1) progress = 1;
         emit(state.copyWith(progress: (progress * 100).round()));
@@ -126,10 +111,23 @@ class ImagesCubit extends Cubit<ImagesState> {
       logError(st.toString(), st);
       rethrow;
     } finally {
+      await Future.delayed(const Duration(milliseconds: 300)).then((_) async {
+        emit(state.copyWith(
+          videoPath: videoPath,
+          progress: 100,
+        ));
+
+        await Future.delayed(const Duration(milliseconds: 300)).then((_) {
+          emit(state.copyWith(
+            isFinished: true,
+            isConvertProcessStarted: false,
+          ));
+        });
+      });
+
       logInfo(TextConstants.videoProcessIsCompleted);
       FFmpegKitConfig.enableStatisticsCallback();
     }
-    emit(state.copyWith(videoPath: videoPath));
     await foldAsync(
       () async => await _projectUseCases.addProjectUseCase.call(
         AddProjectParams(

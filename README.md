@@ -1,17 +1,26 @@
 # image_to_video
 
-A new Flutter project.
+Convert your images into video with FFmpek kit library
 
-## Getting Started
+### ARCHITECTURE: 
 
-This project is a starting point for a Flutter application.
+- Clean Architecture
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://github.com/umutbariscoskun/ApiCrudAPP/assets/45595606/9e8d7eec-8de0-416f-ad1b-eee5a4561a61)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### UI: 
+![gif](https://github.com/umutbariscoskun/ImageToVideo/assets/45595606/37efd236-9ecb-4497-aa6c-7a898a340e0b)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+We needed to know the name and location of the image for the ffmpeg command, and all the images to be processed should be in the same folder.
+So, the locations of the images were changed and they were renamed, allowing them to be processed with the ffmpeg command below.
+You can find all these operations in the file manager.
+
+```dart
+ "${destination.path}/image%03d.jpg",
+
+```
+
+
+
+[You can find more about this architecture in my article.](https://medium.com/@umutbariscoskun/flutter-clean-architecture-paketi-ve-mimari-kullan%C4%B1m%C4%B1-beae4d09e0c3)
 # ImageToVideo

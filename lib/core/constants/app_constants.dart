@@ -27,11 +27,7 @@ const double horizantalPadding = 17;
 const double defaultSizedBoxPadding = 15;
 
 const String assetImageFilePath = "assets/images/";
-
-const String imagePlaceHolder =
-    'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640';
-const String cameraImage =
-    'https://static.vecteezy.com/system/resources/previews/003/715/574/non_2x/camera-sign-and-symbol-photo-icon-or-image-icon-vector.jpg';
+const String assetAnimationFilePath = "assets/animations/";
 
 TextStyle kBoldLargeTitleStyle(Color color) {
   return TextStyle(

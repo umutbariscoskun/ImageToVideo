@@ -37,9 +37,9 @@ class VideosView extends StatelessWidget {
                     isBackActive: true,
                     backOnPress: () => pushedFromImages
                         ? appRouter.pushAndPopUntil(
-                            const HomeRoute(),
+                            const SplashRoute(),
                             predicate: (route) {
-                              return route.settings.name == HomeRoute.name;
+                              return route.settings.name == SplashRoute.name;
                             },
                           )
                         : appRouter.pop(),

@@ -8,6 +8,10 @@ Convert your images into video with FFmpek kit library
 
 ![image](https://github.com/umutbariscoskun/ApiCrudAPP/assets/45595606/9e8d7eec-8de0-416f-ad1b-eee5a4561a61)
 
+[You can find more about this architecture in my article.](https://medium.com/@umutbariscoskun/flutter-clean-architecture-paketi-ve-mimari-kullan%C4%B1m%C4%B1-beae4d09e0c3)
+
+
+
 ### UI: 
 ![gif](https://github.com/umutbariscoskun/ImageToVideo/assets/45595606/37efd236-9ecb-4497-aa6c-7a898a340e0b)
 
@@ -22,5 +26,5 @@ You can find all these operations in the file manager.
 
 
 
-[You can find more about this architecture in my article.](https://medium.com/@umutbariscoskun/flutter-clean-architecture-paketi-ve-mimari-kullan%C4%B1m%C4%B1-beae4d09e0c3)
+
 # ImageToVideo
